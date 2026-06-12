@@ -1,1 +1,328 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LME Lead Intelligence — Amara Raja</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B}
+.header{background:linear-gradient(135deg,#1E2761 0%,#2563EB 100%);padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+.header h1{color:white;font-size:20px;font-weight:700}
+.header p{color:#93C5FD;font-size:12px;margin-top:3px}
+.header-right .date{color:#BFDBFE;font-size:11px}
+.header-right .live{background:#10B981;color:white;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-top:4px;display:inline-block}
+.wrap{padding:15px 18px}
+.price-hero{background:white;border-radius:12px;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-left:5px solid #2563EB;margin-bottom:14px}
+.price-main .label{font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:1px}
+.price-main .price{font-size:48px;font-weight:800;color:#1E2761;line-height:1;margin:4px 0}
+.price-main .unit{font-size:13px;color:#6B7280}
+.price-change{text-align:center;min-width:120px}
+.change-val{font-size:26px;font-weight:700}
+.change-pct{font-size:16px}
+.change-label{font-size:11px;color:#6B7280;margin-top:3px}
+.signal{text-align:center;background:#FEE2E2;border:2px solid #EF4444;border-radius:10px;padding:10px 18px}
+.signal-icon{font-size:26px}
+.signal-text{font-size:15px;font-weight:800;color:#991B1B}
+.signal-sub{font-size:11px;color:#6B7280;margin-top:2px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.grid-21{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:14px}
+.stat{background:white;border-radius:10px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat.blue::before{background:#2563EB}.stat.green::before{background:#10B981}
+.stat.orange::before{background:#F59E0B}.stat.red::before{background:#EF4444}
+.stat .s-label{font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px}
+.stat .s-value{font-size:22px;font-weight:700;color:#1E2761;margin:4px 0 2px}
+.stat .s-sub{font-size:11px;color:#6B7280}
+.card{background:white;border-radius:10px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.card-title{font-size:13px;font-weight:700;color:#1E293B;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.card-title span{font-size:11px;color:#6B7280;font-weight:400}
+.india-card{background:linear-gradient(135deg,#0F4C75 0%,#1B6CA8 100%);border-radius:10px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.india-card .card-title{color:#BAE6FD}
+.india-card .card-title span{color:#7DD3FC}
+.india-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
+.india-row:last-child{border-bottom:none}
+.india-label{font-size:12px;color:#BAE6FD}
+.india-value{font-size:14px;font-weight:700;color:white}
+.india-highlight{background:rgba(16,185,129,0.2);border:1px solid #10B981;border-radius:8px;padding:10px 14px;margin-top:10px}
+.india-highlight .h-label{font-size:11px;color:#6EE7B7;text-transform:uppercase;letter-spacing:1px}
+.india-highlight .h-value{font-size:20px;font-weight:800;color:white;margin-top:2px}
+.china-card{background:linear-gradient(135deg,#7C2D12 0%,#C2410C 100%);border-radius:10px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.china-card .card-title{color:#FED7AA}
+.china-card .card-title span{color:#FDBA74}
+.china-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
+.china-row:last-child{border-bottom:none}
+.china-label{font-size:12px;color:#FED7AA}
+.china-value{font-size:14px;font-weight:700;color:white}
+.china-signal{background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 14px;margin-top:10px;text-align:center}
+.china-signal-text{font-size:13px;font-weight:700;color:white}
+.forecast-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #F3F4F6}
+.forecast-item:last-child{border-bottom:none}
+.f-period{font-size:13px;color:#374151;font-weight:500}
+.f-price{font-size:14px;font-weight:700;color:#1E2761}
+.f-trend{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
+.f-up{background:#DCFCE7;color:#065F46}.f-down{background:#FEE2E2;color:#991B1B}
+.insight-card{background:linear-gradient(135deg,#1E2761 0%,#1e3a8a 100%);border-radius:10px;padding:18px}
+.insight-card .card-title{color:#93C5FD}
+.ai-badge{background:#3B82F6;color:white;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+.insight-text{font-size:13px;color:#BFDBFE;line-height:1.7;margin-bottom:12px}
+.rec-box{background:rgba(16,185,129,0.15);border:1px solid #10B981;border-radius:8px;padding:12px}
+.rec-label{font-size:11px;color:#6EE7B7;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.rec-text{font-size:13px;color:white;font-weight:700;margin-top:4px;line-height:1.5}
+.factor-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #F3F4F6}
+.factor-item:last-child{border-bottom:none}
+.factor-icon{font-size:18px;width:28px;flex-shrink:0}
+.factor-label{font-size:12px;font-weight:600;color:#374151}
+.factor-desc{font-size:11px;color:#6B7280;margin-top:2px}
+.factor-impact{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;flex-shrink:0;margin-left:auto}
+.impact-high{background:#FEE2E2;color:#991B1B}
+.impact-med{background:#FEF3C7;color:#92400E}
+.impact-low{background:#DCFCE7;color:#065F46}
+.footer{background:#1E2761;padding:10px 28px;display:flex;justify-content:space-between;align-items:center}
+.footer p{color:#93C5FD;font-size:10px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>🏭 LME Lead Price Intelligence Dashboard</h1>
+    <p>Amara Raja Energy &amp; Mobility Limited | Procurement Intelligence Unit</p>
+  </div>
+  <div class="header-right" style="text-align:right">
+    <div class="date">📅 12 June 2026 | 01:59 PM IST</div>
+    <div class="live">🟢 AUTO-UPDATED DAILY</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- PRICE HERO -->
+<div class="price-hero">
+  <div class="price-main">
+    <div class="label">LME Lead Cash Price</div>
+    <div class="price">$1,967</div>
+    <div class="unit">USD / Metric Tonne &nbsp;|&nbsp; LME Official Settlement</div>
+  </div>
+  <div style="display:flex;gap:32px">
+    <div class="price-change">
+      <div class="change-val" style="color:#EF4444">▼ -8.00</div>
+      <div class="change-pct" style="color:#EF4444">-0.41%</div>
+      <div class="change-label">vs Last Close ($1,975)</div>
+    </div>
+    <div class="price-change">
+      <div class="change-val" style="color:#EF4444">▼ -68.00</div>
+      <div class="change-pct" style="color:#EF4444">-3.34%</div>
+      <div class="change-label">vs Last Month ($2,035)</div>
+    </div>
+  </div>
+  <div class="signal">
+    <div class="signal-icon">🔴</div>
+    <div class="signal-text">CAUTION</div>
+    <div class="signal-sub">Confidence: 50%</div>
+  </div>
+</div>
+
+<!-- STATS ROW -->
+<div class="grid-4">
+  <div class="stat blue">
+    <div class="s-label">30-Day High</div>
+    <div class="s-value">$2,035</div>
+    <div class="s-sub">Period peak</div>
+  </div>
+  <div class="stat green">
+    <div class="s-label">30-Day Low</div>
+    <div class="s-value">$1,967</div>
+    <div class="s-sub">Period trough</div>
+  </div>
+  <div class="stat orange">
+    <div class="s-label">7-Day MA</div>
+    <div class="s-value">$1,989</div>
+    <div class="s-sub">Short-term trend</div>
+  </div>
+  <div class="stat red">
+    <div class="s-label">30-Day MA</div>
+    <div class="s-value">$2,002</div>
+    <div class="s-sub">Medium-term trend</div>
+  </div>
+</div>
+
+<!-- INDIA + CHINA ROW -->
+<div class="grid-2">
+  <div class="india-card">
+    <div class="card-title">🇮🇳 India Landed Cost Analysis <span>Duties included</span></div>
+    <div class="india-row"><div class="india-label">USD / INR Rate</div><div class="india-value">₹95.08</div></div>
+    <div class="india-row"><div class="india-label">LME Base Price</div><div class="india-value">₹187.02 / kg</div></div>
+    <div class="india-row"><div class="india-label">BCD (2.5%)</div><div class="india-value">₹4.68 / kg</div></div>
+    <div class="india-row"><div class="india-label">IGST (18%)</div><div class="india-value">₹34.59 / kg</div></div>
+    <div class="india-row"><div class="india-label">Freight &amp; Handling</div><div class="india-value">₹3.50 / kg</div></div>
+    <div class="india-highlight">
+      <div class="h-label">⚡ Total Landed Cost</div>
+      <div class="h-value">₹230.25 / kg</div>
+    </div>
+    <div style="margin-top:8px;background:rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px">
+      <div class="h-label" style="color:#BAE6FD;font-size:11px;text-transform:uppercase;letter-spacing:1px">MCX Estimate</div>
+      <div style="font-size:18px;font-weight:700;color:white;margin-top:2px">₹232.75 / kg</div>
+    </div>
+  </div>
+  <div class="china-card">
+    <div class="card-title">🇨🇳 China Arbitrage Monitor <span>vs LME Cash</span></div>
+    <div class="china-row"><div class="china-label">LME Cash Price</div><div class="china-value">$1,967 / MT</div></div>
+    <div class="china-row"><div class="china-label">China Spot (LEAD-CH)</div><div class="china-value">$2,372 / MT</div></div>
+    <div class="china-row"><div class="china-label">Spread (China − LME)</div><div class="china-value" style="color:#FCA5A5">+405.00 (+20.59%)</div></div>
+    <div class="china-row"><div class="china-label">Volatility (30d σ)</div><div class="china-value">$18.86 / MT</div></div>
+    <div class="china-signal"><div class="china-signal-text">🔴 China Premium — Supply Tight</div></div>
+    <div style="margin-top:14px">
+      <div style="font-size:11px;color:#FED7AA;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:8px">📅 Monthly Averages (LME)</div>
+      <table style="width:100%;border-collapse:collapse">
+        <tr>
+          <td style="font-size:12px;color:#FED7AA;padding:5px 0">Junyy <span style="background:rgba(255,255,255,0.2);color:white;font-size:10px;padding:1px 6px;border-radius:8px">Current</span></td>
+          <td style="font-size:14px;font-weight:700;color:white;text-align:right">$2,002</td>
+        </tr>
+        <tr>
+          <td style="font-size:12px;color:#FED7AA;padding:5px 0">Mayyy</td>
+          <td style="font-size:14px;font-weight:700;color:white;text-align:right">$2,002</td>
+        </tr>
+        <tr>
+          <td style="font-size:12px;color:#FED7AA;padding:5px 0">Apryy</td>
+          <td style="font-size:14px;font-weight:700;color:white;text-align:right">N/A</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- CHART + FORWARD CURVE -->
+<div class="grid-21">
+  <div class="card">
+    <div class="card-title">📈 30-Day LME Lead Price Trend <span>USD/tonne | Daily Settlement</span></div>
+    
+<div style="background:#F8FAFC;border-radius:8px;padding:12px 8px 4px 8px;margin-top:4px">
+  <table style="width:100%;border-collapse:collapse">
+    <tr style="vertical-align:bottom"><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,035</div>
+    <div style="height:80px;background:#2563EB;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">13 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$1,995</div>
+    <div style="height:33px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">15 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$1,995</div>
+    <div style="height:33px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">17 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$1,968</div>
+    <div style="height:4px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">19 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$1,997</div>
+    <div style="height:35px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">21 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,006</div>
+    <div style="height:46px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">23 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,020</div>
+    <div style="height:62px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">26 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$1,985</div>
+    <div style="height:21px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">28 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,016</div>
+    <div style="height:58px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">30 May</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,008</div>
+    <div style="height:48px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">01 Jun</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,035</div>
+    <div style="height:80px;background:#2563EB;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">03 Jun</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,003</div>
+    <div style="height:42px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">05 Jun</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$2,003</div>
+    <div style="height:42px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">07 Jun</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$1,983</div>
+    <div style="height:19px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">09 Jun</div>
+  </td><td style="text-align:center;vertical-align:bottom;padding:0 2px;width:6%">
+    <div style="font-size:8px;color:#6B7280;margin-bottom:2px">$1,967</div>
+    <div style="height:4px;background:#EF4444;border-radius:2px 2px 0 0;min-width:14px"></div>
+    <div style="font-size:8px;color:#6B7280;margin-top:3px;white-space:nowrap">11 Jun</div>
+  </td></tr>
+  </table>
+  <div style="display:flex;gap:12px;margin-top:8px;justify-content:center">
+    <span style="font-size:10px;color:#6B7280">■ <span style="color:#2563EB">Price up vs start</span></span>
+    <span style="font-size:10px;color:#6B7280">■ <span style="color:#EF4444">Price down vs start</span></span>
+  </div>
+</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔮 Forward Curve &amp; Outlook <span>LME Futures</span></div>
+    <div class="forecast-item">
+    <div><div class="f-period">1 Month</div></div>
+    <div style="text-align:right">
+      <div class="f-price">$2,005</div>
+      <div class="f-trend f-up">▲ +1.93%</div>
+    </div>
+  </div><div class="forecast-item">
+    <div><div class="f-period">3 Months</div></div>
+    <div style="text-align:right">
+      <div class="f-price">$2,038</div>
+      <div class="f-trend f-up">▲ +3.61%</div>
+    </div>
+  </div><div class="forecast-item">
+    <div><div class="f-period">6 Months</div></div>
+    <div style="text-align:right">
+      <div class="f-price">$2,072</div>
+      <div class="f-trend f-up">▲ +5.34%</div>
+    </div>
+  </div><div class="forecast-item">
+    <div><div class="f-period">12 Months</div></div>
+    <div style="text-align:right">
+      <div class="f-price">$2,097</div>
+      <div class="f-trend f-up">▲ +6.61%</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- AI INSIGHT + DRIVERS -->
+<div class="grid-2">
+  <div class="insight-card">
+    <div class="card-title">🤖 Claude AI Market Insight <span class="ai-badge">Anthropic Claude</span></div>
+    <div class="insight-text">Market insight unavailable.</div>
+    <div class="rec-box">
+      <div class="rec-label">⚡ Procurement Recommendation</div>
+      <div class="rec-text">Check data feed and regenerate.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Key Price Drivers <span>Updated Daily</span></div>
+    
+  </div>
+</div>
+
+</div><!-- end wrap -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>🤖 Generated by Amara Raja AI Procurement Intelligence | n8n + Claude AI + Metals-API</p>
+  <p>Data: LME Official Settlement | China Spot | USD/INR Forex | Anthropic Claude AI</p>
+  <p>⚠️ For procurement decision support only. Not financial advice.</p>
+</div>
+
+</body>
+</html>
